@@ -160,8 +160,8 @@ func (c *Console) doRun() error {
 			preflight.VirtCheck{},
 			preflight.KVMHostCheck{},
 		}
-		for _, c := range checks {
-			msg, err := c.Run()
+		for _, pre := range checks {
+			msg, err := pre.Run()
 			if err != nil {
 				// Preflight checks that fail to run at all are
 				// logged, rather than killing the installer
