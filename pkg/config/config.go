@@ -127,6 +127,26 @@ type HarvesterChartValues struct {
 	EnableGoCoverDir bool                `json:"enableGoCoverDir,omitempty"`
 }
 
+type HugePagePreAlloc struct {
+        // only sizes valid for the system should be used here (e.g. x86_64: "2M" or "1G"; arm: "16K" or "64K")
+        HugePageSize        string                    `json:"hugepagesz"`
+        // the number of pages of this size to pre-allocate.  Numbers too big can cause the system problems!
+	HugePageCount       string                    `json:"hugepagecount"`
+        // only one entry should have this flag set
+	DefaultHugePageSize bool                      `json:"default_hugepagesize"`
+}
+
+type HostHugePageSettings struct {
+	EnableHugePages            bool               `json:"enable_hugepages,omitempty"`
+	HugePageAlloc              []HugePagePreAlloc `json:"hugepageprealloc,omitempty"`
+        EnableTransparentHugePages bool               `json:"transparent_hugepages,omitempty"`
+}
+
+type GuestHugePageSettings struct {
+        // might need more here TBD
+        EnableGuestHugePages bool                     `json:"enableGuestHugepages"`
+}
+
 type Install struct {
 	Automatic           bool    `json:"automatic,omitempty"`
 	SkipChecks          bool    `json:"skipchecks,omitempty"`
@@ -154,6 +174,8 @@ type Install struct {
 	// Following options are not cOS installer flag
 	ForceMBR bool   `json:"forceMbr,omitempty"`
 	DataDisk string `json:"dataDisk,omitempty"`
+
+	HugePageSettings        HostHugePageSettings `json:"host_hugepage_settings,omitempty"`
 
 	Webhooks                []Webhook            `json:"webhooks,omitempty"`
 	Addons                  map[string]Addon     `json:"addons,omitempty"`
